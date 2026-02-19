@@ -25,4 +25,16 @@ https://cityunicorn540-tech.github.io/squad-op-mobile/
 ​CityUnicorn Digital Vault: Part of the official CityUnicorn ecosystem.
 ​📝 About
 ​This project is part of The CityUnicorn Digital Vault, a hub built for creators and gamers to explore the art of mobile creation and custom Android HTML gaming.
+
+---
+
+## 🛠️ Technical Credits
+This project was developed and deployed using the following technologies:
+* **Game Development:** Built with HTML5 and optimized for mobile browser performance.
+* **Hosting & Deployment:** Hosted via **GitHub Pages** for instant access.
+* **Digital Ecosystem:** Proudly featured in **The CityUnicorn Digital Vault**.
+* **Documentation Support:** README template and mobile control guides provided by **Gemini AI**.
+
+## 🦄 About CityUnicorn
+**CityUnicorn** is a platform dedicated to empowering creators and gamers through mobile coding, game design, and digital innovation.
 ​
