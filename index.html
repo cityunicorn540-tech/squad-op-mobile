@@ -6,14 +6,14 @@
     <style>
         body { margin: 0; overflow: hidden; background: #1a1a1a; font-family: sans-serif; touch-action: none; }
         canvas { display: block; background: #2d3e1d; }
-        
+
         /* UI Screens */
         #menu, #end-screen, #level-screen { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.9); display: flex; flex-direction: column; 
             justify-content: center; align-items: center; color: white; z-index: 100;
         }
-        
+
         .btn { 
             padding: 20px 60px; font-size: 24px; background: #2ecc71; color: white; 
             border: none; border-radius: 50px; cursor: pointer; font-weight: bold; 
@@ -23,15 +23,15 @@
         #hud { position: absolute; top: 15px; left: 15px; color: white; pointer-events: none; display: none; z-index: 50; }
         #round-display { font-size: 24px; color: #3498db; font-weight: bold; margin-bottom: 5px; }
         #score-container { font-size: 18px; color: #f1c40f; font-weight: bold; text-shadow: 1px 1px 2px black; }
-        
+
         #minimap-container {
             position: absolute; top: 140px; left: 15px; width: 120px; height: 120px;
             background: rgba(0,0,0,0.7); border: 2px solid #3498db; border-radius: 10px; overflow: hidden; display: none; z-index: 50;
         }
-        
+
         .bar { width: 180px; height: 14px; background: #333; border: 1.5px solid white; margin-top: 8px; border-radius: 7px; overflow: hidden; }
         #hp-fill { width: 100%; height: 100%; background: #2ecc71; transition: width 0.2s; }
-        
+
         #combo-alert { color: #ff4757; font-style: italic; margin-left: 10px; }
 
         /* Level Up Animation */
@@ -111,10 +111,10 @@ function startGame() {
     document.getElementById('minimap-container').style.display = 'block';
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
-    
+
     // Initial player creation
     player = { id: 'player', x: 1500, y: 1500, team: 'blue', hp: 100, maxHp: 100, speed: 5, aimA: 0, weaponType: 'standard', pwrTimer: 0 };
-    
+
     loadLevel(1);
     gameActive = true;
 }
@@ -124,7 +124,7 @@ function loadLevel(lvl) {
     document.getElementById('level-screen').style.display = 'none';
     currentLevel = lvl;
     rNumTxt.innerText = lvl;
-    
+
     // Clear and Reset Arena
     entities = [player];
     bullets = [];
@@ -143,7 +143,14 @@ function loadLevel(lvl) {
         environment.push({ x: Math.random()*worldSize, y: Math.random()*worldSize, r: type === 'rock' ? 25 : 35, type });
     }
     for(let i=0; i<10; i++) environment.push({x: Math.random()*worldSize, y: Math.random()*worldSize, r: 15, type:'medkit', active: true});
-    
+
+    // Clear spawn area - ensure player never spawns on a tree/rock/bush
+    const spawnX = 1500, spawnY = 1500, spawnRadius = 100;
+    environment = environment.filter(env => {
+        let dist = Math.hypot(env.x - spawnX, env.y - spawnY);
+        return dist > spawnRadius;
+    });
+
     // Spawn Duo Partner
     spawnBot('blue', 1500, 1500, {dx:-60, dy:60}, 100, 3);
 
@@ -193,7 +200,7 @@ canvas.addEventListener('touchend', e => {
 
 function update() {
     if(!gameActive || transitionActive) return;
-    
+
     if(zone.r > zone.targetR) zone.r -= 0.15;
     if(comboTimer > 0) comboTimer--; else combo = 1;
 
@@ -206,7 +213,7 @@ function update() {
     }
 
     let enemies = entities.filter(en => en.team === 'red');
-    
+
     // Check Round Completion
     if(enemies.length === 0) {
         triggerLevelUp();
@@ -230,7 +237,7 @@ function update() {
     // Entities Logic
     entities.forEach((en, i) => {
         if(Math.hypot(en.x - zone.x, en.y - zone.y) > zone.r) en.hp -= 0.15;
-        
+
         if(en.id !== 'player') {
             let target = entities.find(e => e.team !== en.team && Math.hypot(en.x-e.x, en.y-e.y) < 500);
             if(target) {
@@ -247,7 +254,7 @@ function update() {
                 }
             }
         }
-        
+
         if(en.hp <= 0) {
             if(en.team === 'red') { score += 100 * currentLevel; combo++; comboTimer = COMBO_TIME_LIMIT; }
             if(en.id === 'player') endGame();
@@ -299,13 +306,13 @@ function endGame() {
 function draw() {
     ctx.clearRect(0,0,w,h); 
     if(!gameActive) return;
-    
+
     ctx.save(); ctx.translate(-camera.x, -camera.y);
-    
+
     // Zone
     ctx.strokeStyle = "rgba(231, 76, 60, 0.3)"; ctx.lineWidth = 10;
     ctx.beginPath(); ctx.arc(zone.x, zone.y, zone.r, 0, Math.PI*2); ctx.stroke();
-    
+
     // Environment
     environment.forEach(env => {
         if(env.type === 'medkit' && !env.active) return;
@@ -314,7 +321,7 @@ function draw() {
         else if(env.type === 'bush') ctx.fillStyle = "rgba(34,139,34,0.4)";
         else if(env.type === 'rock') ctx.fillStyle = "#7f8c8d";
         else if(env.type === 'medkit') ctx.fillStyle = "white";
-        
+
         if(env.type === 'medkit') ctx.fillRect(env.x-10, env.y-10, 20, 20);
         else { ctx.arc(env.x, env.y, env.r, 0, Math.PI*2); ctx.fill(); }
     });
@@ -335,7 +342,7 @@ function draw() {
 
     if(joy.active) drawStick(joy.startX, joy.startY, joy.currX, joy.currY, '#3498db');
     if(shoot.active) drawStick(shoot.startX, shoot.startY, shoot.currX, shoot.currY, '#e74c3c');
-    
+
     // Minimap
     mmCtx.fillStyle = "black"; mmCtx.fillRect(0,0,120,120);
     entities.forEach(en => {
