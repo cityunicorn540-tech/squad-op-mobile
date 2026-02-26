@@ -1,5 +1,5 @@
 Squad Ops: Level Up Edition
-​A high-intensity, mobile-optimized battle royale experience. Version: 2.0.0
+​A high-intensity, mobile-optimized battle royale experience. Version: v1.1
 ​🚀 Play Now
 ​Experience the game directly in your browser:
 Launch Squad Ops
@@ -17,11 +17,11 @@ https://cityunicorn540-tech.github.io/squad-op-mobile/
 ​🛠 Technologies
 ​Core Engine: HTML5 / JavaScript
 ​Hosting: Securely deployed via GitHub Pages.
-​Ecosystem: Proudly featured in the CityUnicorn Digital Vault.
+​Ecosystem: The Cityunicorn Vault.
 ​Support: Documentation and mobile control guides provided by Gemini AI.
 ​🦄 About CityUnicorn
 ​CityUnicorn is a platform dedicated to empowering creators and gamers through mobile coding, game design, and digital innovation. This project is part of a hub built for creators to explore the art of mobile creation and custom AI-enhanced gaming experiences.
-​🕒 Change Log - Version 2.0.0
+​🕒 Change Log - Version
 ​The "Level Up" Update
 ​🚀 New Features
 ​Dynamic Leveling System: Enemies now scale in difficulty as you progress through rounds.
