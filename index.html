@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,8 +25,9 @@
         #round-display { font-size: 24px; color: #3498db; font-weight: bold; margin-bottom: 5px; }
         #score-container { font-size: 18px; color: #f1c40f; font-weight: bold; text-shadow: 1px 1px 2px black; }
 
+        /* Updated Minimap Layout */
         #minimap-container {
-            position: absolute; top: 140px; left: 15px; width: 120px; height: 120px;
+            position: absolute; top: 15px; right: 15px; width: 120px; height: 120px;
             background: rgba(0,0,0,0.7); border: 2px solid #3498db; border-radius: 10px; overflow: hidden; display: none; z-index: 50;
         }
 
@@ -85,7 +87,7 @@ function playSound(freq, type = 'square', decay = 0.1) {
     const gain = audioCtx.createGain();
     osc.type = type; osc.frequency.setValueAtTime(freq, now);
     osc.frequency.exponentialRampToValueAtTime(10, now + decay);
-    gain.gain.setValueAtTime(0.05, now);
+    gain.gain.setValueAtTime(1.0, now);
     gain.gain.exponentialRampToValueAtTime(0.01, now + decay);
     osc.connect(gain); gain.connect(audioCtx.destination);
     osc.start(); osc.stop(now + decay);
@@ -176,7 +178,7 @@ function checkCollision(obj, dx, dy) {
     return nx < 50 || nx > worldSize-50 || ny < 50 || ny > worldSize-50;
 }
 
-// Touch Input (kept same as your version)
+// Touch Input
 canvas.addEventListener('touchstart', e => {
     if(!gameActive || transitionActive) return;
     for(let t of e.changedTouches) {
@@ -362,3 +364,4 @@ loop();
 </script>
 </body>
 </html>
+
